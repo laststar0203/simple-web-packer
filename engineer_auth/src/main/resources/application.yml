@@ -1,0 +1,14 @@
+spring:
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/views/
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/EngineerAuth?characterEncoding=UTF-8&serverTimezone=UTC
+    password: aass6759
+    username: root
+mybatis:
+  mapper-locations: classpath*:mybatis\\mapper\\*.xml
+server:
+  port: 9292

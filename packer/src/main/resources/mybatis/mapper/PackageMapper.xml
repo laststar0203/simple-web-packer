@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hm.packer.model.mapper.PacakgeMapper">
+
+
+    <select id="allPackageCount" resultType="int">
+        SELECT COUNT(*) FROM PACKAGE
+    </select>
+
+
+    <delete id="deleteAll">
+        DELETE FROM PACKAGE;
+    </delete>
+
+    <insert id="insertAll" parameterType="com.hm.packer.model.entity.Package">
+      <foreach collection="list" item="package" separator=";">
+          INSERT INTO PACKAGE VALUES
+          (
+          ${package.number},
+          "${package.name}",
+          "${package.version}",
+          ${package.installed}
+          )
+      </foreach>
+    </insert>
+
+    <select id="selectByInstalled" parameterType="int" resultType="com.hm.packer.model.entity.Package">
+        SELECT * FROM PACKAGE
+        WHERE installed = #{installed}
+    </select>
+
+    <update id="updateInstalled" parameterType="int">
+        UPDATE PACKAGE
+        SET installed = #{installed}
+        WHERE number = #{number}
+    </update>
+
+</mapper>
