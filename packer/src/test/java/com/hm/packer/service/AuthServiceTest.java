@@ -12,22 +12,22 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SpringBootTest
 class AuthServiceTest {
 
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    PackerSafeAES aes;
-
-    @Test
-    void onlineAuth() throws Exception {
-
-        Certified c = authService.onlineAuth(
-                EngineerAuthDto.builder()
-                .id("test")
-                .password("test")
-                .build()
-        );
-
-        assertThat(c.getEngineer().getId()).isEqualTo("test");
-    }
+//    @Autowired
+//    AuthService authService;
+//
+//    @Autowired
+//    PackerSafeAES aes;
+//
+//    @Test
+//    void onlineAuth() throws Exception {
+//
+//        Certified c = authService.onlineAuth(
+//                EngineerAuthDto.builder()
+//                .id("test")
+//                .password("test")
+//                .build()
+//        );
+//
+//        assertThat(c.getEngineer().getId()).isEqualTo("test");
+//    }
 }
