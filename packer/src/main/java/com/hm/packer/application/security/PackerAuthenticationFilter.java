@@ -56,8 +56,7 @@ public class PackerAuthenticationFilter extends AbstractAuthenticationProcessing
         contextHolder.setAuthentication(token);
         SecurityContextHolder.setContext(contextHolder);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/");
-        dispatcher.forward(request, response);
+        response.sendRedirect("/install");
     }
 
     @Override

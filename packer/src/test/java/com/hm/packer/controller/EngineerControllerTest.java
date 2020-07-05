@@ -26,7 +26,7 @@ class EngineerControllerTest {
     MockMvc mvc;
 
 //    @Test
-//    void engineerAuth() throws Exception {
+//    void engineerLogin.jsp() throws Exception {
 //        mvc.perform(get("/engineer/login/auth")
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .content(mapper.writeValueAsString(

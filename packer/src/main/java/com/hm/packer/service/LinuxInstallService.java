@@ -1,10 +1,12 @@
 package com.hm.packer.service;
 
 import com.hm.packer.application.command.LinuxCommandExecutor;
+import com.hm.packer.application.exception.InstallAlreadyInstalledFileException;
 import com.hm.packer.model.dto.Recipe;
 import com.hm.packer.application.recipe.RecipeProvider;
 import com.hm.packer.model.entity.Package;
 import com.hm.packer.model.mapper.PacakgeMapper;
+import com.hm.packer.model.network.ResponseRecipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,9 @@ public class LinuxInstallService {
     public void install(int number, Map<String, String> param) throws Exception {
          Recipe recipe = recipeProvider.get(number);
 
+
+         if(recipe.isInstalled())
+             throw new InstallAlreadyInstalledFileException("This file is already installed.");
          //install
 
         //Param 사이즈가 맞지않음
@@ -78,8 +83,14 @@ public class LinuxInstallService {
                 .collect(Collectors.toList());
     }
 
-    public Package readInstallFile(int number) throws Exception {
+    public ResponseRecipe readInstallFile(int number) throws Exception {
         Recipe recipe = recipeProvider.get(number);
-        return new Package(recipe.getNumber(), recipe.getFileName(), recipe.getFileVersion(), recipe.isInstalled() ? 1:0);
+        return ResponseRecipe.builder()
+                .number(recipe.getNumber())
+                .fileName(recipe.getFileName())
+                .fileVersion(recipe.getFileVersion())
+                .installed(recipe.isInstalled())
+                .installProperties(recipe.getInstallProperties())
+                .build();
     }
 }

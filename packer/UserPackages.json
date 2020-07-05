@@ -8,22 +8,6 @@
       "install" : {
         "script" : "echo install JAVA!",
         "properties" : [
-          {
-            "index" : 0,
-            "name" : "url"
-          },
-          {
-            "index" : 1,
-            "name" : "port"
-          },
-          {
-            "index" : 2,
-            "name" : "username"
-          },
-          {
-            "index" : 3,
-            "name" : "password"
-          }
         ]
       },
       "do" : {

@@ -1,1 +1,0 @@
-java -jar -Dspring.profiles.active=default packer-0.0.1-SNAPSHOT.jar --packer-property.installList=./UserPackages.json --packer-property.licenseKey=./licenseKey
