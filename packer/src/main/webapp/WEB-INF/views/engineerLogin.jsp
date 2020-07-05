@@ -12,5 +12,7 @@
         PWD : <input type="text" id="input_password" name="password"/>
         <button>로그인</button>
     </form>
+    <br>
+    인터넷이 연결되어 있지 않다면 <a href="/licenseKey">해당 링크</a>로 들어가 오프라인 인증을 진행해 주시길 바랍니다.
 </body>
 </html>

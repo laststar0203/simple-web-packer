@@ -62,6 +62,9 @@ public class PackerAuthenticationFilter extends AbstractAuthenticationProcessing
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         failed.printStackTrace();
-        super.unsuccessfulAuthentication(request, response, failed);
+
+        request.setAttribute("errorMessage", failed.getMessage());
+        RequestDispatcher dispatcherServlet = request.getRequestDispatcher("/errorMessage");
+        dispatcherServlet.forward(request,response);
     }
 }
