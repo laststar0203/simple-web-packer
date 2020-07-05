@@ -8,6 +8,7 @@ import com.hm.packer.model.mapper.PacakgeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,22 +29,35 @@ public class LinuxInstallService {
     @Autowired
     private PacakgeMapper mapper;
 
+    @Transactional
     public void install(int number, Map<String, String> param) throws Exception {
          Recipe recipe = recipeProvider.get(number);
 
          //install
-         if(!recipe.getInstallProperties().equals(param.size()))
+
+        //Param 사이즈가 맞지않음
+
+         if(recipe.getInstallProperties().size() != param.size())
             throw new Exception("Invalid number of property values.");
 
          String[] params = new String[recipe.getInstallProperties().size()];
          for(int i = 0; i < params.length; i++){
-             params[i] = param.get(recipe.getInstallProperties().get(i));
+             params[i] = (String)param.get(recipe.getInstallProperties().get(i));
          }
 
-        commandExecutor.command(recipe.getInstallScript(), params, null);
+         List<String> result = new ArrayList<>();
+
+        commandExecutor.command(recipe.getInstallScript(), params, result);
+
+        System.out.println(result);
+
+        result.clear();
+
         //do
         for(String command : recipe.getDoScripts()){
-            commandExecutor.command(command, null);
+            commandExecutor.command(command, result);
+            System.out.println(result);
+            result.clear();
         }
 
         //check
@@ -54,6 +68,7 @@ public class LinuxInstallService {
             throw new Exception("install Failed");
 
         mapper.updateInstalled(number, 1);
+        recipe.setInstalled(true);
 
     }
 

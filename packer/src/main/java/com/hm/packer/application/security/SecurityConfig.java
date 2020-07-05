@@ -5,6 +5,7 @@ import com.hm.packer.application.security.encrypt.PackerSafeAES;
 import com.hm.packer.application.security.provider.LicenseKeyAuthenticationProvider;
 import com.hm.packer.application.security.provider.LoginAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,11 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LicenseKeyAuthenticationProvider licenseKeyAuthenticationProvider;
 
+    @Value("${packer-property.engineer-auth-serverIP}")
+    private String engineerAuthServerIP;
+
     @Bean
     public PackerSafeAES safeRSA(RestTemplate restTemplate){
         PackerSafeAES safeAES = null;
         try {
-            safeAES = new PackerSafeAES(new PackerRSA());
+            safeAES = new PackerSafeAES(new PackerRSA(engineerAuthServerIP));
             safeAES.connect(restTemplate);
             if (safeAES.isExchange())
                 System.out.println("Key Exchange Success");

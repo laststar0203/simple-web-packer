@@ -11,6 +11,7 @@ import com.hm.packer.model.dto.EngineerAuthServerMessage;
 import com.hm.packer.model.entity.LicenseKey;
 import com.hm.packer.model.mapper.LicenseKeyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
@@ -32,10 +33,10 @@ public class AuthService {
     private LicenseKeyMapper mapper;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private PackerSafeAES encryptKeyEncoder;
+
+    @Value("${packer-property.engineer-auth-serverIP}")
+    private String engineerAuthServerIP;
 
     public Certified onlineAuth(EngineerAuthDto dto) throws AuthenticationException {
         if(encryptKeyEncoder == null)
@@ -53,7 +54,7 @@ public class AuthService {
         System.out.println(dto.getId() + " " + dto.getPassword());
 
         EngineerAuthServerMessage<Engineer> message = new EngineerAuthServerMessageParser()
-                .parser(restTemplate.postForObject("http://localhost:9292/engineer/auth", dto, String.class), Engineer.class);
+                .parser(restTemplate.postForObject(engineerAuthServerIP + "/engineer/auth", dto, String.class), Engineer.class);
 
         if(!message.isSuccess())
             throw new BadCredentialsException("로그인 실패하였습니다");
@@ -86,8 +87,9 @@ public class AuthService {
     public Certified offlineAuth(String key) throws AuthenticationException{
 
         LicenseKey licenseKey = mapper.select();
-        if(!licenseKey.getLicenseKey().equals(passwordEncoder.encode(key)))
+        if(!licenseKey.getLicenseKey().equals(key))
             throw new BadCredentialsException("라이센스 키가 일치하지 않습니다.");
+
 
         return Certified.builder().engineer(
                 Engineer.builder()

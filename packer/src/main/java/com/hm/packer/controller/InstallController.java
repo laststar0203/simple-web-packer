@@ -22,11 +22,11 @@ public class InstallController {
         return "install";
     }
 
-    @PostMapping("{number}")
+    @GetMapping("{number}")
     @ResponseStatus(HttpStatus.OK)
     public Message install(
             @PathVariable("number") int number,
-            @RequestBody Map<String, String> installParam){
+            @RequestParam Map<String, String> installParam){
         try {
             linuxInstallService.install(number, installParam);
             return Message.of(true, "Install is Done!" ,null);

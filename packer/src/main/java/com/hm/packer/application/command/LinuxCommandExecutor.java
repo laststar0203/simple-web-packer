@@ -28,7 +28,7 @@ public class LinuxCommandExecutor {
 
     public void command(String command, String[] param, List<String> result) throws Exception{
         for(String s : param)
-            command += s + "";
+            command += " " + s;
         command(command, result);
     }
 }

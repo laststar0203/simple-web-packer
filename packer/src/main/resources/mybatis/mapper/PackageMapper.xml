@@ -3,6 +3,9 @@
 
 <mapper namespace="com.hm.packer.model.mapper.PacakgeMapper">
 
+    <select id="checkPackage" resultType="int">
+        select count(*) from sqlite_master Where Name = 'PACKAGE'
+    </select>
 
     <select id="allPackageCount" resultType="int">
         SELECT COUNT(*) FROM PACKAGE
@@ -10,19 +13,18 @@
 
 
     <delete id="deleteAll">
-        DELETE FROM PACKAGE;
+        DELETE FROM PACKAGE
     </delete>
 
-    <insert id="insertAll" parameterType="com.hm.packer.model.entity.Package">
-      <foreach collection="list" item="package" separator=";">
+
+    <insert id="insert">
           INSERT INTO PACKAGE VALUES
           (
-          ${package.number},
-          "${package.name}",
-          "${package.version}",
-          ${package.installed}
+          #{number},
+          #{name},
+          #{version},
+          #{installed}
           )
-      </foreach>
     </insert>
 
     <select id="selectByInstalled" parameterType="int" resultType="com.hm.packer.model.entity.Package">

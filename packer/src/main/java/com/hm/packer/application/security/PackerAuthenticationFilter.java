@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +34,8 @@ public class PackerAuthenticationFilter extends AbstractAuthenticationProcessing
 
        return super.getAuthenticationManager().authenticate(
                requestURI.equals("/engineer/login/auth") ?
-                        new PreLoginAuthenticationToken(mapper.readValue(httpServletRequest.getReader(), EngineerAuthDto.class)) :
+                        new PreLoginAuthenticationToken(EngineerAuthDto.builder().id(httpServletRequest.getParameter("id"))
+                        .password(httpServletRequest.getParameter("password")).build()) :
                         new PreLicenseKeyAuthenticationToken(httpServletRequest.getParameter("key")));
     }
 
@@ -41,14 +43,26 @@ public class PackerAuthenticationFilter extends AbstractAuthenticationProcessing
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         SecurityContext contextHolder = SecurityContextHolder.createEmptyContext();
         Certified token = (Certified) authResult;
+
+        System.out.println("USER LOGIN SUCCESS");
+        System.out.println("ID : " + token.getEngineer().getId());
+        System.out.println("NAME : " + token.getEngineer().getName());
+        System.out.println("Email : " + token.getEngineer().getEmail());
+        System.out.println("ENGINEER key : " + token.getEngineer().getKey());
+        System.out.println("LICENSE KEY : " + token.getLicenseKey());
+
+
+
         contextHolder.setAuthentication(token);
         SecurityContextHolder.setContext(contextHolder);
 
-        chain.doFilter(request,response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/");
+        dispatcher.forward(request, response);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        failed.printStackTrace();
         super.unsuccessfulAuthentication(request, response, failed);
     }
 }

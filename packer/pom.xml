@@ -11,7 +11,7 @@
 	<groupId>org.hm</groupId>
 	<artifactId>packer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>packer</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -98,6 +98,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
 	</build>
 
 </project>

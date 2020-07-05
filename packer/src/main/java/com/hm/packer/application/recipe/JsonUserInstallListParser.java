@@ -78,17 +78,4 @@ public class JsonUserInstallListParser {
             this.recipes[i].setDeleteScript(element.get("delete").getAsJsonObject().get("script").isJsonNull() ? null : element.get("delete").getAsJsonObject().get("script").getAsString());
         }
     }
-
-    private List<String> recipeMakePropertyList(JsonArray array){
-        if(array == null)
-            return null;
-
-        List<String> properties = new ArrayList<>(array.size());
-        for (JsonElement e : array){
-            properties.add(e.getAsJsonObject().get("name").getAsString());
-        }
-        return properties;
-    }
-
-
 }

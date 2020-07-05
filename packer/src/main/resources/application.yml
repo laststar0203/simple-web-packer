@@ -6,10 +6,11 @@ spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:packer.db
-
-installListFilePath: C:\\Users\\sinny\\Desktop\\develop\\springBoot\\packer\\UserPackages.json
-
 mybatis:
-  mapper-locations: classpath*:mybatis\\mapper\\*.xml
+  mapper-locations: classpath*:mybatis/mapper/*.xml
 server:
   port: 5252
+packer-property:
+  installList: UserPackages.json
+  licenseKey: licenseKey
+  engineer-auth-serverIP: http://localhost:9292

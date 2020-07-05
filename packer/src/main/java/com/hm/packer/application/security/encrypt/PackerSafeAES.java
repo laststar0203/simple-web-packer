@@ -45,7 +45,7 @@ public class PackerSafeAES{
 
             String aesKeyJSON =
                     parser.parser(template.postForObject(
-                            "http://localhost:9292/packer/key",
+                            rsa.getEngineerAuthServerIP() + "/packer/key",
                             new HttpEntity<>(
                                     "{\"authCode\": \"" + rsa.encrypt(rsa.getAuthCode())[0] + "\"}"
                                     , headers),

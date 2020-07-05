@@ -11,18 +11,21 @@ import org.springframework.context.annotation.DependsOn;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Configuration
-@DependsOn("packageService")
+@DependsOn(value = {"DBInitialize", "packageService"})
 public class RecipeConfig {
 
 
     @Autowired
     private PackageService packageService;
 
-    @Value("${installListFilePath}")
+    @Value("${packer-property.installList}")
     private String installListFilePath;
 
     @Bean
@@ -34,7 +37,7 @@ public class RecipeConfig {
         Recipe[] recipes = parser.getRecipes();
 
 
-        //DB에 정보가 없다면 처음 실행되었다는 것이고 설정값.json 을 파싱한 후 DB에 새롭게 집어넣는다.
+        //DB에 정보가 없다면 처음 실행되었다는 것이고 설정값.json 을 파싱한 후 DB에 새롭게 집어넣는다. packageService.isFirst(data.length)
         if(packageService.isFirst(data.length)){
             packageService.init(data);
         }else { //반대로 Recipe의 installed 값을 바꿔준다.
@@ -42,6 +45,7 @@ public class RecipeConfig {
                 recipes[index].setInstalled(true);
             }
         }
+
 
        return new RecipeProvider(recipes);
     }

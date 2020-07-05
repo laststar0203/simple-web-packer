@@ -6,16 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 @Service
 public class PackageService {
 
     @Autowired
     PacakgeMapper pacakgeMapper;
 
-    @Transactional
-    public void init(Package[] aPackages){
+
+    public void init(Package[] aPackages) {
+
         pacakgeMapper.deleteAll();
-        pacakgeMapper.insertAll(aPackages);
+
+        System.out.println(pacakgeMapper.checkPackage());
+
+        for(Package p : aPackages) {
+            pacakgeMapper.insert(p.getNumber(), p.getName(), p.getVersion(), p.getInstalled());
+        }
     }
 
     public boolean isFirst(int matchCount){

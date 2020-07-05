@@ -6,7 +6,7 @@
       "fileVersion" : "11",
       "storagePath" : "/",
       "install" : {
-        "script" : "/shell/install_nms.sh",
+        "script" : "echo install JAVA!",
         "properties" : [
           {
             "index" : 0,
@@ -27,17 +27,19 @@
         ]
       },
       "do" : {
-        "scripts" : []
+        "scripts" : [
+          "echo do JAVA"
+        ]
       },
       "check" : {
-        "script" : null,
+        "script" : "echo heck JAVA",
         "assert" : {
             "pos" : -2,
             "value" : "Complete!"
         }
       },
       "delete" :  {
-        "script" : null
+        "script" : "echo delete JAVA"
       }
     },
     {
@@ -46,7 +48,7 @@
       "fileVersion" : "1.3.4",
       "storagePath" : "/",
       "install" : {
-        "script" : "/shell/install_nms.sh",
+        "script" : "echo MARIA DB",
         "properties" : [
           {
             "index" : 0,

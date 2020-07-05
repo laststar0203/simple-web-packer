@@ -32,8 +32,11 @@ public class PackerRSA{
 
     private boolean isExchange;
 
-    public PackerRSA() throws NoSuchAlgorithmException, NoSuchPaddingException {
+    private final String engineerAuthServerIP;
+
+    public PackerRSA(String engineerAuthServerIP) throws NoSuchAlgorithmException, NoSuchPaddingException {
         isExchange = false;
+        this.engineerAuthServerIP = engineerAuthServerIP;
 
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
         generator.initialize(1024);
@@ -47,6 +50,7 @@ public class PackerRSA{
 
         this.cipher = Cipher.getInstance("RSA");
     }
+
 
     public boolean connect(RestTemplate template){
         if(isExchange)
@@ -62,7 +66,7 @@ public class PackerRSA{
 
             EngineerServerConnectResponse engineerServerConnectResponse =
                             parser.parser(template.getForObject(
-                            UriComponentsBuilder.fromHttpUrl("http://localhost:9292/packer/connect")
+                            UriComponentsBuilder.fromHttpUrl(engineerAuthServerIP+"/packer/connect")
                                     .queryParam("clientPublicKeyModule", packerPublicKeySpec.getModulus())
                                     .queryParam("clientPublicKeyExponent", packerPublicKeySpec.getPublicExponent())
                                     .build().toUri(), String.class
@@ -127,5 +131,9 @@ public class PackerRSA{
 
     public String getAuthCode() {
         return authCode;
+    }
+
+    public String getEngineerAuthServerIP() {
+        return engineerAuthServerIP;
     }
 }
